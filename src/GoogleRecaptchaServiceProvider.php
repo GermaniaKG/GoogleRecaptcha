@@ -8,7 +8,7 @@ use Psr\Log\NullLogger;
 
 use ReCaptcha\ReCaptcha;
 
-class GoogleRecaptchaServices implements ServiceProviderInterface
+class GoogleRecaptchaServiceProvider implements ServiceProviderInterface
 {
 
     /**
