@@ -1,0 +1,39 @@
+{
+	"name": "germania-kg/googlerecaptcha",
+	"description": "Callable and Pimple Service Provider for Google's ReCaptcha.",
+
+	"license": "MIT",
+
+	"authors": [
+		{
+			"name":  "Carsten Witt",
+			"email": "carstenwitt@germania-kg.de",
+			"role":  "Developer"
+		}
+	],
+
+	"autoload": {
+		"psr-4": {
+			"Germania\\GoogleRecaptcha\\": "src"
+		}
+	},
+
+  "autoload-dev": {
+      "psr-4": {
+      	"tests\\": "tests/src"
+      }
+  },
+
+	"require": {
+			"pimple/pimple": "^3.0",
+      "google/recaptcha": "^1.1",
+			"psr/log": "^1.0"
+	},
+
+	"require-dev": {
+			"satooshi/php-coveralls": "^1.0",
+			"phpunit/phpunit": "^5.2|^6.0"
+	}
+
+
+}
