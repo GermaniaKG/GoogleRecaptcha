@@ -50,12 +50,38 @@ class GoogleRecaptchaServiceProvider implements ServiceProviderInterface
     {
 
         /**
+         * @return array
+         */
+        $dic['Google.Recaptcha.Config'] = function($dic) {
+            return [
+                'input_field'       => 'g-recaptcha-response',
+                'status_code'       => 400,
+                'request_attribute' => 'GoogleRecaptcha'
+            ];
+        };
+
+
+        /**
          * @return string
          */
         $dic['Google.Recaptcha.PublicKey'] = function($dic) {
             return $this->public_key;
         };
 
+
+        /**
+         * @return string
+         */
+        $dic['Google.Recaptcha.SecretKey'] = function($dic) {
+            return $this->secret_key;
+        };
+
+        /**
+         * @return string
+         */
+        $dic['Google.Recaptcha.ClientIP'] = function($dic) {
+            return $_SERVER['REMOTE_ADDR'];
+        };
 
         /**
          * @return string
@@ -90,6 +116,24 @@ class GoogleRecaptchaServiceProvider implements ServiceProviderInterface
             $logger     = $dic['Google.Recaptcha.Logger'];
 
             return new GoogleRecaptchaCallable( $php_client, $logger );
+        };
+
+
+        /**
+         * @return callable GoogleRecaptchaMiddleware
+         */
+        $dic['Google.Recaptcha.Middleware'] = function($dic) {
+            $config = $dic['Google.Recaptcha.Config'];
+
+            $recaptcha_validator = $dic['Google.Recaptcha.Validator.Callable'];
+            $client_ip           = $dic['Google.Recaptcha.ClientIP'];
+            $logger              = $dic['Google.Recaptcha.Logger'];
+            $input_field         = $config['input_field'];
+            $http_status_code    = $config['http_status_code'];
+            $request_attribute   = $config['request_attribute'];
+
+            return new GoogleRecaptchaMiddleware($recaptcha_validator, $client_ip, $input_field, $request_attribute, $http_status_code, $logger);
+
         };
 
     }
