@@ -3,19 +3,19 @@ namespace Germania\GoogleRecaptcha;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use ReCaptcha\ReCaptcha;
 
-class GoogleRecaptchaCallable
+class GoogleRecaptchaCallable implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+
     /**
      * @var ReCaptcha
      */
     public $recaptcha;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
 
 
     /**
@@ -25,7 +25,7 @@ class GoogleRecaptchaCallable
     public function __construct( ReCaptcha $recaptcha, LoggerInterface $logger = null )
     {
         $this->recaptcha = $recaptcha;
-        $this->logger = $logger ?: new NullLogger;
+        $this->setLogger( $logger ?: new NullLogger );
     }
 
 
