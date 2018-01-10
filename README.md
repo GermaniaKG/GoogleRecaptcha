@@ -25,6 +25,7 @@ Alternatively, add this package directly to your *composer.json:*
 <?php
 use Germania\GoogleRecaptcha\GoogleRecaptchaCallable;
 use Germania\GoogleRecaptcha\GoogleRecaptchaServiceProvider;
+use Germania\GoogleRecaptcha\GoogleRecaptchaMiddleware;
 
 // ... to be done.
 ```
