@@ -5,11 +5,15 @@ use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 use ReCaptcha\ReCaptcha;
 
-class GoogleRecaptchaServiceProvider implements ServiceProviderInterface
+class GoogleRecaptchaServiceProvider implements ServiceProviderInterface, LoggerAwareInterface
 {
+
+    use LoggerAwareTrait;
 
     /**
      * @var string
@@ -20,11 +24,6 @@ class GoogleRecaptchaServiceProvider implements ServiceProviderInterface
      * @var string
      */
     public $secret_key;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
 
 
 
@@ -37,7 +36,7 @@ class GoogleRecaptchaServiceProvider implements ServiceProviderInterface
     {
         $this->secret_key = $secret_key;
         $this->public_key = $public_key;
-        $this->logger = $logger ?: new NullLogger;
+        $this->setLogger( $logger ?: new NullLogger );
     }
 
 
