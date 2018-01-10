@@ -82,13 +82,6 @@ class GoogleRecaptchaServiceProvider implements ServiceProviderInterface, Logger
             return $_SERVER['REMOTE_ADDR'];
         };
 
-        /**
-         * @return string
-         */
-        $dic['Google.Recaptcha.SecretKey'] = function($dic) {
-            return $this->secret_key;
-        };
-
 
         /**
          * @return LoggerInterface
