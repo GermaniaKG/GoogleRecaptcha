@@ -91,9 +91,9 @@ $recaptcha_services = new GoogleRecaptchaServiceProvider( $public_key, $secret_k
 $dic->register( $recaptcha_services );
 ```
 
-#### The services
+## The services
 
-**Google.Recaptcha.PublicKey**  
+#### Google.Recaptcha.PublicKey
 This is the service you surely will need most often.
 
 ```php
@@ -106,7 +106,7 @@ echo $twig->render('form.tpl', [
 ```
 
 
-**Google.Recaptcha.Logger**  
+#### Google.Recaptcha.Logger
 The default logger has been passed on instantiation. Override or customize like this:
 
 ```php
@@ -117,7 +117,7 @@ $dic->extend('Google.Recaptcha.Logger', function($default_logger, $dic) {
 });
 ```
 
-**Google.Recaptcha.ClientIP**  
+#### Google.Recaptcha.ClientIP
 The client API is used to ask Googles web API; its default is `$_SERVER['REMOTE_ADDR']`. You normally will not need to override this:
 
 ```php
@@ -128,7 +128,7 @@ $dic->extend('Google.Recaptcha.ClientIP', function($server_remote_addr, $dic) {
 });
 ```
 
-**Google.Recaptcha.Validator**  
+#### Google.Recaptcha.Validator  
 This creates Google's server-side validation client which comes with the official [ReCaptcha\ReCaptcha](https://packagist.org/packages/google/recaptcha) library. It will be automatically installed with this *GoogleRecaptcha* package. If you wish to create your own, do something like:
 
 ```php
@@ -143,7 +143,7 @@ $dic->extend('Google.Recaptcha.Validator', function($default, $dic) {
 ```
 
 
-**Google.Recaptcha.Validator.Callable**  
+#### Google.Recaptcha.Validator.Callable
 is a callable wrapper, i.e. an invokable class, around the *Google.Recaptcha.Validator* service. This executable will return exactly **true** or **false.** It uses the *Google.Recaptcha.Logger* instance from above, logging an *info* on success and a *notice* on failure
 
 ```php
@@ -172,7 +172,7 @@ $callable_recaptcha = new GoogleRecaptchaCallable( $validator, $logger );
 ```
 
 
-**Google.Recaptcha.Config**  
+#### Google.Recaptcha.Config
 This configuration array is used by the **GoogleRecaptchaMiddleware** and provides these values:
 
 field | value | description
