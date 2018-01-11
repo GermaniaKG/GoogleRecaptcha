@@ -29,7 +29,8 @@ $dic = new Slim\Container;
 $dic = new Pimple\Container;
 ```
 
---
+
+------
 
 ### ServiceProvider
 
@@ -52,7 +53,7 @@ $recaptcha_services = new GoogleRecaptchaServiceProvider( $public_key, $secret_k
 $dic->register( $recaptcha_services );
 ```
 
---
+------
 
 ### Slim3-style Middleware
 
@@ -97,9 +98,7 @@ $route = $app->post('/new', function(Request $request, Response $response) { ...
 
 
 
-
-
--- 
+------
 
 ### Callable validation wrapper
 
