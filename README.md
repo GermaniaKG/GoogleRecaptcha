@@ -1,6 +1,6 @@
 # Germania KG · GoogleRecaptcha
 
-**Callable and Pimple Service Provider for Google's [ReCaptcha.](https://www.google.com/recaptcha/admin)**
+**Callable wrapper, Slim3 Middleware and Pimple-style Service Provider for Google's [ReCaptcha.](https://www.google.com/recaptcha/admin)**
 
 
 ## Installation
@@ -20,7 +20,7 @@ Alternatively, add this package directly to your *composer.json:*
 
 ## Usage
 
-The following examples assume you're working with Pimple or Slim Framework and have your DI container at hand:
+The following examples assume you're working with [Pimple](https://pimple.symfony.com/) or [Slim Framework](https://www.slimframework.com/) and have your [DI container](https://www.slimframework.com/docs/concepts/di.html) at hand:
 
 ```php
 $app = new Slim\App;
@@ -29,23 +29,58 @@ $dic = new Slim\Container;
 $dic = new Pimple\Container;
 ```
 
+--
+
+### ServiceProvider
+
+See **chapter “The services in detail”** to see which services and resources are offered. For public and secret test keys, see the official [reCAPTCHA v2 FAQ](https://developers.google.com/recaptcha/docs/faq).
+
+```php
+<?php
+use Germania\GoogleRecaptcha\GoogleRecaptchaServiceProvider;
+
+// Officially intended for test purposes; see FAQ
+$public_key = "lots_of_characters_here";
+$secret_key = "secret_bunch_of_characters_here";
+
+// Pass keys to ServiceProvider
+$recaptcha_services = new GoogleRecaptchaServiceProvider( $public_key, $secret_key );
+// ... and optionally a PSR-3 Logger
+$recaptcha_services = new GoogleRecaptchaServiceProvider( $public_key, $secret_key, $logger );
+
+// Now register; all services will transparently be added to the $dic
+$dic->register( $recaptcha_services );
+```
+
+--
 
 ### Slim3-style Middleware
 
-Before the route controller is executed, this middleware checks if a) there's a recaptcha user input in `$_POST['g-recaptcha-response']` and b) whether the validation succeeds. 
+Before the route controller is executed, this middleware checks 
 
-- It stores the validation result in a Request attribute named `GoogleRecaptcha`. 
-- When the validation fails, it will add the `400 Bad Request` status code to the Response object. 
+1. whether there is a recaptcha user input in `$_POST['g-recaptcha-response']` 
+2. whether the validation with Google's *ReCaptcha* client succeeds. 
+
+Dependent on the results, this middleware does
+
+- Store the validation result in a *Request* attribute named `GoogleRecaptcha`. 
+- When the validation fails, add a `400 Bad Request` status code to the *Response* object. 
+
+The string identifiers used here can be modified in the **Google.Recaptcha.Config** service, see below.
 
 ```php
 <?php
 use Germania\GoogleRecaptcha\GoogleRecaptchaMiddleware;
 
+// 1. Add Service provider first
+// 2. Create route
 $route = $app->post('/new', function() { ...} );
+
+// 2. Add route middleware
 $route->add( 'Google.Recaptcha.Middleware' );
 ```
 
-**IMPORTANT NOTICE: The middleware will call the *$next* middleware, regardless of the validation status.** Any route controller should check for the HTTP status itself and react accordingly. The `GoogleRecaptcha` Request attribute will help:
+**IMPORTANT NOTICE: The middleware will call the *$next* middleware, regardless of the validation status.** Any route controller should check for the HTTP status itself and react accordingly. The `GoogleRecaptcha` Request attribute array will help – just ask for *failed* or *success* or *status* elements.
 
 ```php
 $route = $app->post('/new', function(Request $request, Response $response) { ...
@@ -61,37 +96,28 @@ $route = $app->post('/new', function(Request $request, Response $response) { ...
 ```
 
 
-All string identifiers used here can be modified in the **Google.Recaptcha.Config** service, see below.
 
 
 
+-- 
 
 ### Callable validation wrapper
 
-TBD.
-
-### ServiceProvider
-
-See the official [reCAPTCHA v2 FAQ](https://developers.google.com/recaptcha/docs/faq) on the public and secret test keys.
+The *ReCaptcha* validation client is instantiated automatically. The callable wrapper uses the same logger instance than the *ServiceProvider*.  See section “Google.Recaptcha.Validator” on how to setup your own validator instance.
 
 ```php
 <?php
-use Germania\GoogleRecaptcha\GoogleRecaptchaServiceProvider;
+// 1. Add Service provider first
+// 2. Grab service. 
+$callable_recaptcha = $dic['Google.Recaptcha.Validator.Callable'];
 
-// Officially intended for test purposes; see FAQ
-$public_key = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
-$secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
-
-// Pass keys to ServiceProvider
-$recaptcha_services = new GoogleRecaptchaServiceProvider( $public_key, $secret_key );
-// ... and optionally a PSR-3 Logger
-$recaptcha_services = new GoogleRecaptchaServiceProvider( $public_key, $secret_key, $logger );
-
-// Now register; all services will transparently be added to the $dic
-$dic->register( $recaptcha_services );
+// TRUE or FALSE
+$valid = $callable_recaptcha( $_POST['g_recaptcha_response'], $_SERVER['REMOTE_ADDR'] );
 ```
+--
 
-## The services
+
+## The services in detail
 
 #### Google.Recaptcha.PublicKey
 This is the service you surely will need most often.
@@ -129,7 +155,7 @@ $dic->extend('Google.Recaptcha.ClientIP', function($server_remote_addr, $dic) {
 ```
 
 #### Google.Recaptcha.Validator  
-This creates Google's server-side validation client which comes with the official [ReCaptcha\ReCaptcha](https://packagist.org/packages/google/recaptcha) library. It will be automatically installed with this *GoogleRecaptcha* package. If you wish to create your own, do something like:
+This creates Google's server-side validation client which comes with the official [ReCaptcha\ReCaptcha](https://packagist.org/packages/google/recaptcha) library. It will be automatically installed with this *GoogleRecaptcha* package and automatically instantiated. If you wish to create your own, do something like:
 
 ```php
 <?php
