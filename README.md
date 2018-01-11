@@ -33,7 +33,7 @@ $dic = new Pimple\Container;
 
 ### ServiceProvider
 
-See **chapter “The services in detail”** to see which services and resources are offered. For public and secret test keys, see the official [reCAPTCHA v2 FAQ](https://developers.google.com/recaptcha/docs/faq).
+See chapter [The services in detail](#the-services-in-detail) to see which services and resources are offered. For public and secret test keys, see the official [reCAPTCHA v2 FAQ](https://developers.google.com/recaptcha/docs/faq).
 
 ```php
 <?php
@@ -66,7 +66,7 @@ Dependent on the results, this middleware does
 - Store the validation result in a *Request* attribute named `GoogleRecaptcha`. 
 - When the validation fails, add a `400 Bad Request` status code to the *Response* object. 
 
-The string identifiers used here can be modified in the **Google.Recaptcha.Config** service, see below.
+The string identifiers used here can be modified in the [**Google.Recaptcha.Config**](#googlerecaptchaconfig) service, see below.
 
 ```php
 <?php
@@ -103,7 +103,7 @@ $route = $app->post('/new', function(Request $request, Response $response) { ...
 
 ### Callable validation wrapper
 
-The *ReCaptcha* validation client is instantiated automatically. The callable wrapper uses the same logger instance than the *ServiceProvider*.  See section “Google.Recaptcha.Validator” on how to setup your own validator instance.
+The *ReCaptcha* validation client is instantiated automatically. The callable wrapper uses the same logger instance than the [*ServiceProvider*](#serviceprovider).  See section [**Google.Recaptcha.Validator**](#googlerecaptchavalidator) on how to setup your own validator instance.
 
 ```php
 <?php
@@ -170,7 +170,7 @@ $dic->extend('Google.Recaptcha.Validator', function($default, $dic) {
 
 
 #### Google.Recaptcha.Validator.Callable
-is a callable wrapper, i.e. an invokable class, around the *Google.Recaptcha.Validator* service. This executable will return exactly **true** or **false.** It uses the *Google.Recaptcha.Logger* instance from above, logging an *info* on success and a *notice* on failure
+is a callable wrapper, i.e. an invokable class, around the [**Google.Recaptcha.Validator**](#googlerecaptchavalidator) service. This executable will return exactly **true** or **false.** It uses the [**Google.Recaptcha.Logger**](#googlerecaptchalogger) instance from above, logging an *info* on success and a *notice* on failure.
 
 ```php
 <?php
@@ -199,7 +199,7 @@ $callable_recaptcha = new GoogleRecaptchaCallable( $validator, $logger );
 
 
 #### Google.Recaptcha.Config
-This configuration array is used by the **GoogleRecaptchaMiddleware** and provides these values:
+This configuration array is used by the [**GoogleRecaptchaMiddleware**](#slim3-style-middleware) and provides these values:
 
 field | value | description
 :-----|:------|:-----------
