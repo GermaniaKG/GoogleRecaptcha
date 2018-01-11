@@ -40,7 +40,7 @@ See chapter [The services in detail](#the-services-in-detail) to see which servi
 <?php
 use Germania\GoogleRecaptcha\GoogleRecaptchaServiceProvider;
 
-// Officially intended for test purposes; see FAQ
+// See FAQ for test keys
 $public_key = "lots_of_characters_here";
 $secret_key = "secret_bunch_of_characters_here";
 
@@ -113,7 +113,9 @@ $callable_recaptcha = $dic['Google.Recaptcha.Validator.Callable'];
 // TRUE or FALSE
 $valid = $callable_recaptcha( $_POST['g_recaptcha_response'], $_SERVER['REMOTE_ADDR'] );
 ```
---
+
+
+------
 
 
 ## The services in detail
