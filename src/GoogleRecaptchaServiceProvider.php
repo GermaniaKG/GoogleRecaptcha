@@ -115,13 +115,14 @@ class GoogleRecaptchaServiceProvider implements ServiceProviderInterface, Logger
          * @return callable GoogleRecaptchaMiddleware
          */
         $dic['Google.Recaptcha.Middleware'] = function($dic) {
-            $config = $dic['Google.Recaptcha.Config'];
 
             $recaptcha_validator = $dic['Google.Recaptcha.Validator.Callable'];
             $client_ip           = $dic['Google.Recaptcha.ClientIP'];
             $logger              = $dic['Google.Recaptcha.Logger'];
+
+            $config = $dic['Google.Recaptcha.Config'];
             $input_field         = $config['input_field'];
-            $http_status_code    = $config['http_status_code'];
+            $http_status_code    = $config['status_code'];
             $request_attribute   = $config['request_attribute'];
 
             return new GoogleRecaptchaMiddleware($recaptcha_validator, $client_ip, $input_field, $request_attribute, $http_status_code, $logger);
