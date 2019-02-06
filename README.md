@@ -2,8 +2,15 @@
 
 **Callable wrapper, Slim3 Middleware and Pimple-style Service Provider for Google's [ReCaptcha.](https://www.google.com/recaptcha/admin)**
 
+[![Packagist](https://img.shields.io/packagist/v/germania-kg/googlerecaptcha.svg?style=flat)](https://packagist.org/packages/germania-kg/googlerecaptcha)
+[![PHP version](https://img.shields.io/packagist/php-v/germania-kg/googlerecaptcha.svg)](https://packagist.org/packages/germania-kg/googlerecaptcha)
+[![Build Status](https://img.shields.io/travis/GermaniaKG/GoogleRecaptcha.svg?label=Travis%20CI)](https://travis-ci.org/GermaniaKG/GoogleRecaptcha)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GermaniaKG/GoogleRecaptcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GermaniaKG/GoogleRecaptcha/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/GermaniaKG/GoogleRecaptcha/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GermaniaKG/GoogleRecaptcha/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/GermaniaKG/GoogleRecaptcha/badges/build.png?b=master)](https://scrutinizer-ci.com/g/GermaniaKG/GoogleRecaptcha/build-status/master)
 
-## Installation
+
+## Installation with Composer
 
 ```bash
 $ composer require germania-kg/googlerecaptcha
@@ -220,7 +227,6 @@ $dic->extend('Google.Recaptcha.Config', function($default, $dic) {
 
 
 
-
 ## Development
 
 ```bash
@@ -229,12 +235,13 @@ $ cd GoogleRecaptcha
 $ composer install
 ```
 
-
 ## Unit tests
 
-Either copy `phpunit.xml.dist` to `phpunit.xml` and adapt to your needs, or leave as is. 
-Run [PhpUnit](https://phpunit.de/) like this:
+Either copy `phpunit.xml.dist` to `phpunit.xml` and adapt to your needs, or leave as is. Run [PhpUnit](https://phpunit.de/) test or composer scripts like this:
 
 ```bash
+$ composer test
+# or
 $ vendor/bin/phpunit
 ```
+
